@@ -1,0 +1,65 @@
+# Hugo configuration file
+baseURL: https://monamaret.github.io/claude-best-practices/
+title: Claude Code Guide
+
+# The site publishes no RSS feeds. Feeds included content that the pages hide, such as HTML comments.
+disableKinds:
+  - rss
+
+# import hextra as module
+module:
+  hugoVersion:
+    extended: true
+    min: "0.168.0"
+  imports:
+    - path: github.com/imfing/hextra
+
+markup:
+  # allow raw html
+  goldmark:
+    renderer:
+      unsafe: true
+
+  # enable hextra syntax highlight
+  highlight:
+    noClasses: false
+
+menu:
+  main:
+    - name: Docs
+      pageRef: /docs
+      weight: 1
+    - name: Search
+      weight: 2
+      params:
+        type: search
+
+params:
+  page:
+    tabs:
+      sync: true
+
+  navbar:
+    displayTitle: true
+    displayLogo: true
+    logo:
+      path: images/logo.svg
+      dark: images/logo-dark.svg
+      # No "link": Hextra then links the logo to the home page under the baseURL subpath.
+      width: 24
+      height: 24
+
+  footer:
+    # The copyright text is the "copyright" key in i18n/en.yaml.
+    displayCopyright: true
+    displayPoweredBy: false
+
+  # Under-review flag: the report link opens a new issue in this repository.
+  # Leave issuesURL empty to hide the report link.
+  feedback:
+    issuesURL: "https://github.com/monamaret/claude-best-practices/issues"
+
+  # "Edit this page" links open the page source on GitHub.
+  editURL:
+    enable: true
+    base: "https://github.com/monamaret/claude-best-practices/edit/main/content"

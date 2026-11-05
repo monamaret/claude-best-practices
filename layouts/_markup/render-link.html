@@ -1,0 +1,51 @@
+{{- /*
+Copied from Hextra v0.12.3 layouts/_markup/render-link.html, with one project addition.
+A link to a guide page under /docs/ that is not in this build (a draft page in production)
+renders as plain text. A link to a page with no source file fails the build.
+When you update Hextra, copy the new version and add the marked block again.
+See .claude/rules/hextra-components.md.
+*/ -}}
+{{- $dest := .Destination -}}
+{{- $url := urls.Parse $dest -}}
+{{- $plain := false -}}
+
+{{- if and $dest (hasPrefix $dest "/") -}}
+  {{- with or (.PageInner.GetPage $url.Path) (.PageInner.Resources.Get $url.Path) (resources.Get $url.Path) -}}
+    {{- $query := cond $url.RawQuery (printf "?%s" $url.RawQuery) "" -}}
+    {{- $fragment := cond $url.Fragment (printf "#%s" $url.Fragment) "" -}}
+    {{- $dest = printf "%s%s%s" .RelPermalink $query $fragment -}}
+  {{- else -}}
+    {{- if hasPrefix $url.Path "/docs/" -}}
+      {{- /* Project addition: a guide page that is not in this build. */ -}}
+      {{- $src := strings.TrimSuffix "/" $url.Path -}}
+      {{- if or (os.FileExists (printf "content%s.md" $src)) (os.FileExists (printf "content%s/_index.md" $src)) (os.FileExists (printf "content%s/index.md" $src)) -}}
+        {{- /* The page exists but is a draft, so show the text without a link. */ -}}
+        {{- $plain = true -}}
+      {{- else -}}
+        {{- errorf "Broken link in %s: no page for %q" $.Page.File.Path $dest -}}
+      {{- end -}}
+    {{- else -}}
+      {{- $hasBasePrefix := and (ne site.Home.RelPermalink "/") (hasPrefix $dest site.Home.RelPermalink) -}}
+      {{- if not $hasBasePrefix -}}
+        {{- $dest = (relURL (strings.TrimPrefix "/" $dest)) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if $plain -}}
+  {{- .Text | safeHTML -}}
+{{- else -}}
+{{- with . -}}
+{{- $isExternal := strings.HasPrefix .Destination "http" -}}
+<a href="{{ $dest | safeURL }}"
+   {{- with .Title -}}title="{{ . }}"{{- end -}}
+   {{- if $isExternal -}}target="_blank" rel="noopener"{{- end -}}
+>
+  {{- .Text | safeHTML -}}
+  {{- if and .Page.Site.Params.externalLinkDecoration $isExternal -}}
+    {{- partial "utils/icon.html" (dict "name" "arrow-up-right" "attributes" `class="hx:inline hx:rtl:rotate-270 hx:align-baseline" height="1em" aria-hidden="true"`) -}}
+  {{- end -}}
+</a>
+{{- end -}}
+{{- end -}}

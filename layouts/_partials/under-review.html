@@ -1,0 +1,21 @@
+{{- /*
+Shows a flag on a page whose front matter has the tag "under-review".
+The report link appears only when params.feedback.issuesURL is set in hugo.yaml.
+*/ -}}
+{{- if in (.Params.tags | default slice) "under-review" -}}
+  {{- $text := printf "%s" (T "underReviewText") -}}
+  {{- with site.Params.feedback.issuesURL -}}
+    {{- $title := printf "%s: %s" (T "underReviewIssueTitle") $.Title -}}
+    {{- $body := printf "%s %s" (T "underReviewIssueBody") $.Permalink -}}
+    {{- $url := printf "%s/new?title=%s&body=%s" (strings.TrimSuffix "/" .) ($title | urlquery) ($body | urlquery) -}}
+    {{- $text = printf "%s [%s](%s)." $text (T "underReviewReport") $url -}}
+  {{- end -}}
+  {{- with site.GetPage "/tags/under-review" -}}
+    {{- $text = printf "%s [%s](%s)" $text (T "underReviewList") .RelPermalink -}}
+  {{- end -}}
+  {{- partial "shortcodes/callout.html" (dict
+    "content" ($text | markdownify)
+    "icon" "pencil"
+    "class" "hx:border-amber-200 hx:bg-amber-100 hx:text-amber-900 hx:dark:border-amber-200/30 hx:dark:bg-amber-900/30 hx:dark:text-amber-200"
+  ) -}}
+{{- end -}}

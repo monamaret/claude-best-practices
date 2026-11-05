@@ -1,0 +1,37 @@
+/*
+  Theme colors.
+
+  Primary: purple. Hextra builds its primary-50 to primary-900 scale from these
+  three values, and uses primary-600 for links in both modes. Hextra sets its own
+  primary color under .dark, so dark mode needs its own values here.
+    Light mode: dark purple. primary-600 = #5C2593 (9.8:1 on white).
+    Dark mode:  light purple. primary-600 = #B87BF4 (6.5:1 on #111).
+
+  Accent: green, for link hover, text selection, and the logo prompt glyph.
+    Light mode: #117845 (5.5:1 on white).
+    Dark mode:  #54D494 (10.1:1 on #111).
+*/
+:root {
+  --primary-hue: 270deg;
+  --primary-saturation: 60%;
+  --primary-lightness: 40%;
+  --accent-color: #117845;
+  --accent-selection: rgb(17 120 69 / 0.2);
+}
+
+.dark {
+  --primary-hue: 270deg;
+  --primary-saturation: 85%;
+  --primary-lightness: 80%;
+  --accent-color: #54d494;
+  --accent-selection: rgb(84 212 148 / 0.3);
+}
+
+/* Links in page content turn green on hover. Same selector as Hextra's prose link style. */
+.content :where(a):not(:where([class~=not-prose], [class~=not-prose] *)):hover {
+  color: var(--accent-color);
+}
+
+::selection {
+  background-color: var(--accent-selection);
+}

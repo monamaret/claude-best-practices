@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Lang }}">
+<head>
+  <meta charset="utf-8">
+  {{- if not hugo.IsProduction }}
+  <meta name="robots" content="noindex, nofollow">
+  {{- end }}
+  <meta http-equiv="refresh" content="0; url={{ (.Site.GetPage "/docs").Permalink }}">
+  <link rel="canonical" href="{{ (.Site.GetPage "/docs").Permalink }}">
+  <title>{{ .Site.Title }}</title>
+</head>
+<body>
+  <p>Redirecting to <a href="{{ (.Site.GetPage "/docs").Permalink }}">the guide</a>.</p>
+</body>
+</html>

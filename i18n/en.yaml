@@ -1,0 +1,9 @@
+# Text for the under-review flag (layouts/_partials/under-review.html).
+underReviewText: "This page is under review. Some steps have not been tested yet, and the content can change."
+underReviewReport: "Report a problem with this page"
+underReviewList: "See all pages under review."
+underReviewIssueTitle: "Correction"
+underReviewIssueBody: "Page:"
+
+# Footer text (params.footer.displayCopyright in hugo.yaml). Rendered as Markdown.
+copyright: "Content licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Code samples licensed under [MIT](https://github.com/monamaret/claude-best-practices/blob/main/LICENSE-CODE)."
